@@ -423,8 +423,8 @@ return_json_info({ok, Map}) ->
     {error, {bad_status, Map}}.
 
 basic_auth(User, Secret) ->
-    UserEnc = uri_string:compose_query([{User, true}]),
-    SecretEnc = uri_string:compose_query([{Secret, true}]),
+    [UserEnc|_] = string:split(uri_string:compose_query([{User, <<"1">>}]), "="),
+    [SecretEnc|_] = string:split(uri_string:compose_query([{Secret, <<"1">>}]), "="),
     RawAuth = <<UserEnc/binary, <<":">>/binary, SecretEnc/binary>>,
     AuthData = base64:encode(RawAuth),
     BasicAuth = <<<<"Basic ">>/binary, AuthData/binary>>,
